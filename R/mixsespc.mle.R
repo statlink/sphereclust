@@ -118,14 +118,14 @@ mixsespc.mle <- function(x, g = 2, tol = 1e-5) {
 
   ep <- fun2(wlika, rswlika, param, x, I3, g, lika)
   lik[1] <- ep$lik
-  ep2 <- fun2(ep$wlika, ep$rswlika, ep$param, x, I3, g, lika)
+  ep2 <- fun2(ep$wlika, ep$rswlika, ep$param, x, I3, g, ep$lika)
   lik[2] <- ep2$lik
 
   i <- 2
   while ( lik[i] - lik[i - 1] > tol ) {
     i <- i + 1
     ep <- ep2
-    ep2 <- fun2(ep$wlika, ep$rswlika, ep$param, x, I3, g, lika)
+    ep2 <- fun2(ep$wlika, ep$rswlika, ep$param, x, I3, g, ep$lika)
     lik[i] <- ep2$lik
   }
   res <- ep2
