@@ -75,13 +75,13 @@ mixsespc.mle <- function(x, g = 2, tol = 1e-5) {
   runtime <- proc.time()
   ## Step 1
 
-  if (g > 1) {
+  if ( g > 1 ) {
     ini <- mixture::gpcm(x, G = g, mnames = NULL, start = 0, mmax = 100)
     cl <- Rfast::rowMaxs(ini$z)
   } else  cl <- rep(1, n)
   wij <- tabulate(cl)
 
-  if ( min(wij) <= g + 3 ) {
+  if ( min(wij) <= 10 ) {
     g <- g - 1
     lika <- matrix(nrow = n, ncol = g)
     param <- matrix(nrow = g, ncol = 5)
