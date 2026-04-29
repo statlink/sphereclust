@@ -1,0 +1,69 @@
+\name{Density of a mixture of elliptically symmetric distributions}
+\alias{dmixsespc}
+\alias{dmixesag}
+\title{
+Density of a mixture of elliptically symmetric distributions
+}
+
+\description{
+Density of a mixture of elliptically symmetric distributions.
+}
+
+\usage{
+dmixsespc(y, probs, mu, theta, logden = FALSE)
+dmixesag(y, probs, mu, gam, logden = FALSE)
+}
+
+\arguments{
+\item{y}{
+A matrix with unit vectors.
+}
+\item{probs}{
+This is avector with the mixing probability of each group.
+}
+\item{mu}{
+A matrix with the mean direction of each group.
+}
+\item{theta}{
+A matrix with the \eqn{\theta} parameters of the SESPC distribution of each group.
+}
+\item{gam}{
+A matrix with the \eqn{\gamma} parameters of the ESAG distribution of each group.
+}
+\item{logden}{
+If you the logarithm of the density values set this to TRUE.
+}
+}
+
+\details{
+The function computes the density for a given mixture of SESPC or ESAG distributions.
+}
+
+\value{
+A vector with the (log) density values of y.
+}
+
+%\references{
+%}
+
+\author{
+Michail Tsagris.
+
+R implementation and documentation: Michail Tsagris \email{mtsagris@uoc.gr}.
+}
+%\note{
+%%  ~~further notes~~
+%}
+
+\seealso{
+\code{\link{mixsespc.mle}, \link{rmixsespc}
+}
+}
+
+\examples{
+probs <- c(0.5, 0.5)
+mu <- matrix(rnorm(6, 10, 5), ncol = 3)
+theta <- matrix(c(-2, 1, -2, 1), ncol = 2)
+x <- rmixsespc(200, probs, mu, theta)$x
+b <- dmixsespc(x, probs, mu, theta)
+}

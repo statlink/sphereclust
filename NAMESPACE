@@ -1,0 +1,17 @@
+#useDynLib(Compositional, .registration = TRUE)
+
+importFrom("graphics", points, abline, lines, axis)
+importFrom("grDevices", contourLines)
+importFrom("mixture", gpcm)
+importFrom("Rfast", rowsums, colmeans, rowMaxs)
+importFrom("stats", optim, dnorm, pnorm)
+importFrom("Directional", sespc.mle, esag.mle, rsespc, resag,
+           euclid, euclid.inv, sphereplot)
+importFrom("rangen", Runif)
+importFrom("rgl", open3d, points3d, spheres3d)
+
+import("parallel")
+
+exportPattern("^[[:alpha:]]+")
+exportPattern("^[^\\.]")
+export(.onAttach)
