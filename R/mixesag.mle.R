@@ -1,4 +1,4 @@
-mixesag.mle <- function(x, g = 2, tol = 1e-5) {
+mixesag.mle <- function(x, g = 2, tol = 1e-4) {
 
   fun <- function(param, z, w, I3) {
     m <- param[1:3]
