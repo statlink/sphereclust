@@ -1,10 +1,9 @@
-bic.mixsespc <- function(x, G = 5, n.start = 10, tol = 1e-4, ncores = 1) {
+bic.mixesag <- function(x, G = 5, n.start = 10, tol = 1e-4, ncores = 1) {
   runtime <- proc.time()
   logn <- log( dim(x)[1] )  ## sample size of the data
-  tab <- bic <- icl <- 1:G
-  mod <- Directional::sespc.mle(x)
+  bic <- icl <- 1:G
+  mod <- Directional::esag.mle(x)
   bic[1] <- icl[1] <-  - 2 * mod$loglik + 5 * logn  ## BIC assuming one cluster
-  tab[1] <- dim(x)[1]
 
   if ( ncores > 1 ) {
     cl <- parallel::makeCluster(ncores)
@@ -13,38 +12,30 @@ bic.mixsespc <- function(x, G = 5, n.start = 10, tol = 1e-4, ncores = 1) {
     parallel::clusterEvalQ(cl, library(sphereclust))
 
     results <- parallel::parSapply(cl, 2:G, function(vim) {
-      a <- sphereclust::mixsespc.mle(x, vim, n.start = n.start, tol = tol)
+      a <- sphereclust::mixesag.mle(x, vim, n.start = n.start, tol = tol)
       d <- dim(a$param)[1]
       bic_val <-  -2 * a$loglik + ( d - 1 + d * 5 ) * logn
       icl_val <- bic_val - sum( a$probs * log(a$probs), na.rm = TRUE )
-      tab <- min( table(a$pred) )
-      c( bic = bic_val, icl = icl_val, tab = tab )
+      c(bic = bic_val, icl = icl_val)
     }, simplify = TRUE )                          ## 2 x (G-1) matrix
 
     bic[2:G] <- results["bic", ]
     icl[2:G] <- results["icl", ]
-    tab[2:G] <- results["tab", ]
   } else {
 
     for ( vim in 2:G ) {
-      a <- sphereclust::mixsespc.mle(x, vim, n.start = n.start, tol = tol)  ## model based clustering for some possible clusters
+      a <- sphereclust::mixesag.mle(x, vim, tol = tol)  ## model based clustering for some possible clusters
       d <- dim(a$param)[1]
-      if ( min( table(a$pred) ) > 10 ) {
-        bic[vim] <-  -2 * a$loglik + ( d - 1 + d * 5 ) * logn
-        icl[vim] <- bic[vim] - sum( a$probs * log(a$probs), na.rm = TRUE )
-      } else  {
-        bic[vim] <- bic[vim - 1]
-        icl[vim] <- icl[vim - 1]
-      }
+      bic[vim] <-  -2 * a$loglik + ( d - 1 + d * 5 ) * logn
+      icl[vim] <- bic[vim] - sum( a$probs * log(a$probs), na.rm = TRUE )
     }  ## BIC for a range of different clusters
   }
 
-  runtime <- proc.time() - runtime
   names(bic) <- names(icl) <- paste("g=", 1:G, sep = "")
   ina <- rep(1, G)
   char <- rep(16, G)
   ina[ which.min(icl) ] <- 3  ## chosen number of clusters will appear with red on the plot
-  char[ which.min(icl) ] <- 17
+  char[ which.min(icl) ] <- 10
   plot(1:G, icl, col = ina, xlab = "Number of components", ylab = "ICL values", cex.lab = 1.3, cex.axis = 1.3)
   abline(v = 1:G, lty = 2, col = "lightgrey")
   abline(h = seq(min(icl, na.rm = FALSE), max(icl, na.rm = FALSE), length = 10), lty = 2, col = "lightgrey" )
