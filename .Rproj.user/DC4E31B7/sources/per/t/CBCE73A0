@@ -1,0 +1,26 @@
+{
+    "id": "CBCE73A0",
+    "path": "~/GitHub/sphereclust/R/mixesag.mle.R",
+    "project_path": "R/mixesag.mle.R",
+    "type": "r_source",
+    "hash": "2973444439",
+    "contents": "",
+    "dirty": false,
+    "created": 1777570373227.0,
+    "source_on_save": false,
+    "relative_order": 3,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "76,28",
+        "scrollLine": "66"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1777565281,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1777565281,
+    "read_only": false,
+    "read_only_alternatives": []
+}
