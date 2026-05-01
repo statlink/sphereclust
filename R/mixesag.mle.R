@@ -1,4 +1,4 @@
-mixesag.mle <- function(x, g = 2, tol = 1e-4) {
+mixesag.mle <- function(x, g = 2, n.start = 10, tol = 1e-4) {
 
   fun <- function(param, z, w, I3) {
     m <- param[1:3]
@@ -70,7 +70,7 @@ mixesag.mle <- function(x, g = 2, tol = 1e-4) {
   ## Step 1
 
   if ( g > 1 ) {
-    cl <- kmeans(x, g)$cl
+    cl <- kmeans(x, g, nstart = n.start)$cl
   } else  cl <- rep(1, n)
   wij <- tabulate(cl)
 
@@ -78,7 +78,7 @@ mixesag.mle <- function(x, g = 2, tol = 1e-4) {
     g <- g - 1
     lika <- matrix(nrow = n, ncol = g)
     param <- matrix(nrow = g, ncol = 5)
-    cl <- kmeans(x, g)$cl
+    cl <- kmeans(x, g, nstart = n.start)$cl
     wij <- tabulate(cl)
   }
 

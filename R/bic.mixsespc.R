@@ -1,4 +1,4 @@
-bic.mixsespc <- function(x, G = 5, tol = 1e-4, ncores = 1) {
+bic.mixsespc <- function(x, G = 5, n.start = 10, tol = 1e-4, ncores = 1) {
   runtime <- proc.time()
   logn <- log( dim(x)[1] )  ## sample size of the data
   bic <- icl <- 1:G
@@ -12,7 +12,7 @@ bic.mixsespc <- function(x, G = 5, tol = 1e-4, ncores = 1) {
     parallel::clusterEvalQ(cl, library(sphereclust))
 
     results <- parallel::parSapply(cl, 2:G, function(vim) {
-      a <- sphereclust::mixsespc.mle(x, vim, tol = tol)
+      a <- sphereclust::mixsespc.mle(x, vim, n.start = n.start, tol = tol)
       d <- dim(a$param)[1]
       bic_val <-  -2 * a$loglik + ( d - 1 + d * 5 ) * logn
       icl_val <- bic_val - sum( a$probs * log(a$probs), na.rm = TRUE )
