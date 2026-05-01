@@ -9,7 +9,7 @@ bic.mixesag <- function(x, G = 5, n.start = 10, tol = 1e-4, ncores = 1) {
   if ( ncores > 1 ) {
     cl <- parallel::makeCluster(ncores)
     on.exit(parallel::stopCluster(cl))
-    parallel::clusterExport(cl, varlist = c("x", "tol", "logn"), envir = environment())
+    parallel::clusterExport(cl, varlist = c("x", "tol", "n.start", "logn"), envir = environment())
     parallel::clusterEvalQ(cl, library(sphereclust))
 
     results <- parallel::parSapply(cl, 2:G, function(vim) {

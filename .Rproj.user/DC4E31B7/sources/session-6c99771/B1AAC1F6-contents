@@ -1,15 +1,15 @@
 bic.mixsespc <- function(x, G = 5, n.start = 10, tol = 1e-4, ncores = 1) {
   runtime <- proc.time()
   logn <- log( dim(x)[1] )  ## sample size of the data
-  tab <- bic <- icl <- 1:G
+  d <- bic <- icl <- 1:G
   mod <- Directional::sespc.mle(x)
   bic[1] <- icl[1] <-  - 2 * mod$loglik + 5 * logn  ## BIC assuming one cluster
-  tab[1] <- dim(x)[1]
+  d[1] <- dim(x)[1]
 
   if ( ncores > 1 ) {
     cl <- parallel::makeCluster(ncores)
     on.exit(parallel::stopCluster(cl))
-    parallel::clusterExport(cl, varlist = c("x", "tol", "logn"), envir = environment())
+    parallel::clusterExport(cl, varlist = c("x", "tol", "n.start", "logn"), envir = environment())
     parallel::clusterEvalQ(cl, library(sphereclust))
 
     results <- parallel::parSapply(cl, 2:G, function(vim) {
@@ -17,13 +17,17 @@ bic.mixsespc <- function(x, G = 5, n.start = 10, tol = 1e-4, ncores = 1) {
       d <- dim(a$param)[1]
       bic_val <-  -2 * a$loglik + ( d - 1 + d * 5 ) * logn
       icl_val <- bic_val - sum( a$probs * log(a$probs), na.rm = TRUE )
-      tab <- min( table(a$pred) )
-      c( bic = bic_val, icl = icl_val, tab = tab )
+      c( bic = bic_val, icl = icl_val, d = d )
     }, simplify = TRUE )                          ## 2 x (G-1) matrix
 
     bic[2:G] <- results["bic", ]
     icl[2:G] <- results["icl", ]
-    tab[2:G] <- results["tab", ]
+    d[2:G] <- results["d", ]
+    ep <- which( diff(d) == 0 ) + 1
+    if ( length(ep) > 0 ) {
+      bic[ep] <- bic[ min(ep) - 1 ]
+      icl[ep] <- icl[ min(ep) - 1 ]
+    }
   } else {
 
     for ( vim in 2:G ) {
