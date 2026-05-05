@@ -1,4 +1,4 @@
-mixsespc.mle <- function(x, g = 2, n.start = 10, tol = 1e-4) {
+mixsespc.mle <- function(x, g = 2, tol = 1e-4) {
 
   fun <- function(param, x, w, I3) {
     m <- param[1:3]

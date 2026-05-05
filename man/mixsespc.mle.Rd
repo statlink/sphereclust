@@ -10,8 +10,8 @@ It performs model based clustering for spherical data assuming ellitpically syme
 }
 
 \usage{
-mixsespc.mle(x, g = 2, n.start = 10, tol = 1e-4)
-mixesag.mle(x, g = 2, n.start = 10, tol = 1e-4)
+mixsespc.mle(x, g = 2, tol = 1e-4)
+mixesag.mle(x, g = 2, tol = 1e-4)
 }
 
 \arguments{
@@ -20,10 +20,6 @@ A matrix with the data expressed as unit vectors.
 }
 \item{g}{
 The number of groups to fit. It must be greater than or equal to 2.
-}
-\item{n.start}{
-The number of random starts to try.
-See also R's built-in function \code{\link{bic.mixsespc}} for more information about this.
 }
 \item{tol}{
 The tolerance value to terminate the EM algorithm.
