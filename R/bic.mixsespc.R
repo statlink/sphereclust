@@ -1,11 +1,10 @@
 bic.mixsespc <- function(x, G = 5, n.start = 10, tol = 1e-4, ncores = 1) {
   runtime <- proc.time()
   logn <- log( dim(x)[1] )  ## sample size of the data
-  p <- bic <- icl <- 1:G
+  bic <- icl <- 1:G
   mod <- Directional::sespc.mle(x)
   bic[1] <- icl[1] <-  - 2 * mod$loglik + 5 * logn  ## BIC assuming one cluster
-  p[1] <- dim(x)[1]
-
+  
   if ( ncores > 1 ) {
     cl <- parallel::makeCluster(ncores)
     on.exit(parallel::stopCluster(cl))
@@ -14,26 +13,36 @@ bic.mixsespc <- function(x, G = 5, n.start = 10, tol = 1e-4, ncores = 1) {
 
     results <- parallel::parSapply(cl, 2:G, function(vim) {
       a <- sphereclust::mixsespc.mle(x, vim, n.start = n.start, tol = tol)
+      nm <- min( table(a$pred) )
       d <- dim(a$param)[1]
       bic_val <-  -2 * a$loglik + ( d - 1 + d * 5 ) * logn
       icl_val <- bic_val - sum( a$probs * log(a$probs), na.rm = TRUE )
-      c( bic = bic_val, icl = icl_val, d = d )
+      c( bic = bic_val, icl = icl_val, d = d, nm = nm )
     }, simplify = TRUE )                          ## 2 x (G-1) matrix
 
+    d <- nm <- 1:G
+    d[1] <- nm[1] <- dim(x)[1]
     bic[2:G] <- results["bic", ]
     icl[2:G] <- results["icl", ]
-    p[2:G] <- results["d", ]
+    nm[2:G] <- results["nm", ]
     ep <- which( diff(p) == 0 ) + 1
     if ( length(ep) > 0 ) {
       bic[ep] <- bic[ min(ep) - 1 ]
       icl[ep] <- icl[ min(ep) - 1 ]
     }
+    ep <- which(nm < 10)
+    if ( length(ep) > 0 ) {
+      bic[ep] <- bic[ep - 1]
+      icl[ep] <- icl[ep - 1]
+    }
+    
   } else {
 
     for ( vim in 2:G ) {
       a <- sphereclust::mixsespc.mle(x, vim, n.start = n.start, tol = tol)  ## model based clustering for some possible clusters
       d <- dim(a$param)[1]
-      if ( d == vim ) {
+      nm <- min( table(a$pred) )
+      if ( d == vim  &  nm > 10 ) {
         bic[vim] <-  -2 * a$loglik + ( d - 1 + d * 5 ) * logn
         icl[vim] <- bic[vim] - sum( a$probs * log(a$probs), na.rm = TRUE )
       } else  {
