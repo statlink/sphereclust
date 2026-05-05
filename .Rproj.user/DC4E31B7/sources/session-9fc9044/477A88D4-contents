@@ -25,7 +25,7 @@ bic.mixesag <- function(x, G = 5, tol = 1e-4, ncores = 1) {
     bic[2:G] <- results["bic", ]
     icl[2:G] <- results["icl", ]
     nm[2:G] <- results["nm", ]
-    ep <- which( diff(d) == 0 ) + 1
+    ep <- which( diff(p) == 0 ) + 1
     if ( length(ep) > 0 ) {
       bic[ep] <- bic[ min(ep) - 1 ]
       icl[ep] <- icl[ min(ep) - 1 ]

@@ -1,8 +1,8 @@
-bic.mixesag <- function(x, G = 5, tol = 1e-4, ncores = 1) {
+bic.mixsespc <- function(x, G = 5, tol = 1e-4, ncores = 1) {
   runtime <- proc.time()
   logn <- log( dim(x)[1] )  ## sample size of the data
   bic <- icl <- 1:G
-  mod <- Directional::esag.mle(x)
+  mod <- Directional::sespc.mle(x)
   bic[1] <- icl[1] <-  - 2 * mod$loglik + 5 * logn  ## BIC assuming one cluster
 
   if ( ncores > 1 ) {
@@ -12,7 +12,7 @@ bic.mixesag <- function(x, G = 5, tol = 1e-4, ncores = 1) {
     parallel::clusterEvalQ(cl, library(sphereclust))
 
     results <- parallel::parSapply(cl, 2:G, function(vim) {
-      a <- sphereclust::mixesag.mle(x, vim, tol = tol)
+      a <- sphereclust::mixsespc.mle(x, vim, tol = tol)
       nm <- min( table(a$pred) )
       d <- dim(a$param)[1]
       bic_val <-  -2 * a$loglik + ( d - 1 + d * 5 ) * logn
@@ -25,7 +25,7 @@ bic.mixesag <- function(x, G = 5, tol = 1e-4, ncores = 1) {
     bic[2:G] <- results["bic", ]
     icl[2:G] <- results["icl", ]
     nm[2:G] <- results["nm", ]
-    ep <- which( diff(d) == 0 ) + 1
+    ep <- which( diff(p) == 0 ) + 1
     if ( length(ep) > 0 ) {
       bic[ep] <- bic[ min(ep) - 1 ]
       icl[ep] <- icl[ min(ep) - 1 ]
@@ -39,7 +39,7 @@ bic.mixesag <- function(x, G = 5, tol = 1e-4, ncores = 1) {
   } else {
 
     for ( vim in 2:G ) {
-      a <- sphereclust::mixesag.mle(x, vim, tol = tol)  ## model based clustering for some possible clusters
+      a <- sphereclust::mixsespc.mle(x, vim, tol = tol)  ## model based clustering for some possible clusters
       d <- dim(a$param)[1]
       nm <- min( table(a$pred) )
       if ( d == vim  &  nm > 10 ) {
@@ -52,6 +52,7 @@ bic.mixesag <- function(x, G = 5, tol = 1e-4, ncores = 1) {
     }  ## BIC for a range of different clusters
   }
 
+  runtime <- proc.time() - runtime
   names(bic) <- names(icl) <- paste("g=", 1:G, sep = "")
   ina <- rep(1, G)
   char <- rep(16, G)
