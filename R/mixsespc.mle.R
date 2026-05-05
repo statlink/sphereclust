@@ -75,7 +75,10 @@ mixsespc.mle <- function(x, g = 2, n.start = 10, tol = 1e-4) {
   ## Step 1
 
   if ( g > 1 ) {
-    cl <- kmeans(x, g, nstart = n.start)$cl
+    ## cl <- kmeans(x, g, nstart = n.start)$cl
+    y <- Directional::euclid.inv(x)
+    mod <- mixture::gpcm(y, G = g, mnames = NULL, start = 2, mmax = 100)
+    cl <- Rfast::rowMaxs(mod$z)
   } else  cl <- rep(1, n)
   wij <- tabulate(cl)
 
@@ -83,7 +86,9 @@ mixsespc.mle <- function(x, g = 2, n.start = 10, tol = 1e-4) {
     g <- g - 1
     lika <- matrix(nrow = n, ncol = g)
     param <- matrix(nrow = g, ncol = 5)
-    cl <- kmeans(x, g, nstart = n.start)$cl
+    # cl <- kmeans(x, g, nstart = n.start)$cl
+    mod <- mixture::gpcm(y, G = g, mnames = NULL, start = 2, mmax = 100)
+    cl <- Rfast::rowMaxs(mod$z)
     wij <- tabulate(cl)
   }
 
