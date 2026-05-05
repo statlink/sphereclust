@@ -82,8 +82,8 @@ mixesag.mle <- function(x, g = 2, tol = 1e-4) {
     lika <- matrix(nrow = n, ncol = g)
     param <- matrix(nrow = g, ncol = 5)
     #cl <- kmeans(x, g, nstart = n.start)$cl
-    #mod <- mixture::gpcm(y, G = g, mnames = NULL, start = 2, mmax = 100)
-    #cl <- Rfast::rowMaxs(mod$z)
+    mod <- mixture::gpcm(y, G = g, mnames = NULL, start = 2, mmax = 100)
+    cl <- Rfast::rowMaxs(mod$z)
     wij <- tabulate(cl)
   }
 
