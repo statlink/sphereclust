@@ -53,6 +53,7 @@ bic.mixesag <- function(x, G = 5, tol = 1e-4, ncores = 1) {
     }  ## BIC for a range of different clusters
   }
 
+  runtime <- proc.time() - runtime
   names(bic) <- names(icl) <- paste("g=", 1:G, sep = "")
   ina <- rep(1, G)
   char <- rep(16, G)
