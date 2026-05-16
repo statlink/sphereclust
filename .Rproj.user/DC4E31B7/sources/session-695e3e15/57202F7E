@@ -1,0 +1,26 @@
+{
+    "id": "57202F7E",
+    "path": "~/GitHub/sphereclust/R/bic.mixesag.R",
+    "project_path": "R/bic.mixesag.R",
+    "type": "r_source",
+    "hash": "1230008193",
+    "contents": "",
+    "dirty": false,
+    "created": 1778954840616.0,
+    "source_on_save": false,
+    "relative_order": 1,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "18,74",
+        "scrollLine": "13"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1778954966,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1778954966634,
+    "read_only": false,
+    "read_only_alternatives": []
+}
