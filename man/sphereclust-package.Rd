@@ -15,13 +15,14 @@ symmetric projected Cauchy (SESPC) or mixtures of elliptically symmetric angular
 Package: \tab sphereclust\cr
 Type: \tab Package\cr
 Version: \tab 1.0 \cr
-Date: \tab 2026-05-16\cr
+Date: \tab 2026-05-18\cr
 License: \tab GPL-2\cr
 }
 }
 
 \author{
-Michail Tsagris \email{mtsagris@uoc.gr} and Nikolaos Kontemeniotis \email{kontemeniotisn@gmail.com}.
+Michail Tsagris \email{mtsagris@uoc.gr} and and Theodoros Perdikis
+\email{theoperdikis92@gmail.com}.
 }
 
 \section{Maintainers}{
