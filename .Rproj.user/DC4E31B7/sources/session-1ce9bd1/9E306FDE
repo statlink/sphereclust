@@ -1,0 +1,26 @@
+{
+    "id": "9E306FDE",
+    "path": "~/GitHub/sphereclust/R/geodesic_pca_sphere.R",
+    "project_path": "R/geodesic_pca_sphere.R",
+    "type": "r_source",
+    "hash": "1101683303",
+    "contents": "",
+    "dirty": false,
+    "created": 1779270941275.0,
+    "source_on_save": false,
+    "relative_order": 1,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "54,11",
+        "scrollLine": "43"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1779270987,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1779270987630,
+    "read_only": false,
+    "read_only_alternatives": []
+}
