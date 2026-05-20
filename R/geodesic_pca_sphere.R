@@ -6,7 +6,7 @@ geodesic_pca_sphere <- function(x, k = 2) {
   # X: n × d on S^{d-1}
   # Returns projection onto S^k via geodesic PCA
   dm <- dim(x)  ;  n <- dm[1]  ;  d <- dm[2]
-  # Step 1: Compute Fréchet mean (intrinsic mean on sphere)
+  # Step 1: Compute Frechet mean (intrinsic mean on sphere)
   mu <- .frechet_mean_sphere(x)
   # Step 2: Logarithmic map: sphere → tangent space at mu
   # Log map: log_mu(x) = (angle between mu and x) * (x - <x,mu>mu) / ||x - <x,mu>mu||
@@ -59,7 +59,7 @@ geodesic_pca_sphere <- function(x, k = 2) {
 }
 
 
-# Logarithmic map: S^{d-1} → T_mu S^{d-1}
+# Logarithmic map: S^{d-1} -> T_mu S^{d-1}
 .log_map_sphere <- function(x, mu) {
   # x: n × d points on sphere
   # mu: d-vector, base point on sphere
@@ -81,7 +81,7 @@ geodesic_pca_sphere <- function(x, k = 2) {
   V
 }
 
-# Exponential map: T_mu S^{d-1} → S^{d-1}
+# Exponential map: T_mu S^{d-1} -> S^{d-1}
 .exp_map_sphere <- function(v, mu) {
   # v: tangent vector at mu
   # mu: base point on sphere
