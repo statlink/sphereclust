@@ -16,7 +16,7 @@ bic.mixsespc <- function(x, G = 5, tol = 1e-4, ncores = 1) {
       nm <- min( table(a$pred) )
       d <- dim(a$param)[1]
       bic_val <-  - 2 * a$loglik + ( d - 1 + d * 5 ) * logn
-      icl_val <- bic_val - 2 * sum( a$probs * log(a$probs), na.rm = TRUE )
+      icl_val <-  - 2 * sum( a$probs * log(a$probs), na.rm = TRUE )
       c( bic = bic_val, icl = icl_val, d = d, nm = nm )
     }, simplify = TRUE )                          ## 2 x (G-1) matrix
 
@@ -45,7 +45,7 @@ bic.mixsespc <- function(x, G = 5, tol = 1e-4, ncores = 1) {
       nm <- min( table(a$pred) )
       if ( d == vim  &  nm > 10 ) {
         bic[vim] <-  - 2 * a$loglik + ( d - 1 + d * 5 ) * logn
-        icl[vim] <- bic[vim] - 2 * sum( a$probs * log(a$probs), na.rm = TRUE )
+        icl[vim] <- icl[vim] - 2 * sum( a$probs * log(a$probs), na.rm = TRUE )
       } else  {
         bic[vim] <- bic[vim - 1]
         icl[vim] <- icl[vim - 1]
