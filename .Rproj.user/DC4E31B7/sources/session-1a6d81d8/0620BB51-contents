@@ -30,10 +30,16 @@ Michail Tsagris <mtsagris@uoc.gr>
 }
 
 \references{
-Perdikis T., Alharbi N. and Tsagris M. (2026). Model--based clustering for spherical
-and hyper--spherical data using elliptically symmetric distributions.
+Tsagris M. and Kontemeniotis N. (2025). Simplicial clustering using the \eqn{\alpha}--transformation.
+Lobachevskii Journal of Mathematics (Accepted for publication).
+https://arxiv.org/pdf/2509.05945.
 
-https://arxiv.org/abs/2605.27496
+Alenazi A. (2023). A review of compositional data analysis and recent advances.
+Communications in Statistics--Theory and Methods, 52(16): 5535--5567.
+
+Tsagris M.T., Preston S. and Wood A.T.A. (2011). A data-based power transformation for compositional data.
+Fourth International International Workshop on Compositional Data Analysis.
+
 }
 
 %\note{
