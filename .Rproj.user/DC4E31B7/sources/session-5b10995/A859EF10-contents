@@ -37,11 +37,9 @@ of ESAG distributions. The initial step of the algorithm is based on a Gaussian 
 A list including:
 \item{param}{
 For the mixsespc.mle() and mixesag.mle() a matrix with the mean direction, the concentration
-parameters and mixing probability of each group. For the mixkent.mle() a matrix with the mixing probabilities, the concentration parameters,
+parameters and mixing probability of each group.
+For the mixkent.mle() a matrix with the mixing probabilities, the concentration parameters,
 the ovalness parameters and the \eqn{psi} angles.
-}
-\item{G}{
-For the mixkent.mle() a list with the \eqn{\Gamma} matrix of each cluster.
 }
 \item{loglik}{
 The value of the maximised log-likelihood.
