@@ -51,7 +51,7 @@ mixkent.mle <- function(x, g = 2, tol = 1e-4) {
     mod <- Directional::kent.mle(x[cl == j, ])
     G[[ j ]] <- mod$G
     param[j, ] <- mod$param
-    lika[, j] <-  Directional::dkent(x, G[[ j ]], param[j, ])
+    lika[, j] <- Directional::dkent(x, G[[ j ]], param[j, ], logden = TRUE)
   }
 
   wlika <- exp(lika)
