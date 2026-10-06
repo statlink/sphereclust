@@ -7,7 +7,6 @@ bic.mixesag <- function(x, G = 5, tol = 1e-4, ncores = 1) {
 
   if ( ncores > 1 ) {
     cl <- parallel::makeCluster(ncores)
-    on.exit(parallel::stopCluster(cl))
     parallel::clusterExport(cl, varlist = c("x", "tol", "logn"), envir = environment())
     parallel::clusterEvalQ(cl, library(sphereclust))
 
@@ -19,6 +18,8 @@ bic.mixesag <- function(x, G = 5, tol = 1e-4, ncores = 1) {
       icl_val <- bic_val - 2 * sum( a$probs * log(a$probs), na.rm = TRUE )
       c( bic = bic_val, icl = icl_val, d = d, nm = nm )
     }, simplify = TRUE )                          ## 2 x (G-1) matrix
+
+    parallel::stopCluster(cl)
 
     d <- nm <- 1:G
     d[1] <- nm[1] <- dim(x)[1]
