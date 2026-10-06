@@ -117,20 +117,34 @@ mixkent.mle <- function(x, g = 2, tol = 1e-4) {
   xg2 <- sum(w * xg[, 2]^2)
   xg3 <- sum(w * xg[, 3]^2)
 
-    mle <- function(para) {
-      k <- para[1] ; b <- para[2]
-      ckb <- Directional::kent.logcon(k, b)
+    mle <- function(para, xg1, xg2, xg3, W) {
+      k <- para[1]  ;  b <- para[2]
+      ckb <- kent.logcon(k, b)
       W * ckb - k * xg1 - b * (xg2 - xg3)
+    }
+    mle2 <- function(para, xg1, xg2, xg3, W) {
+      k <- para[1]   ;   b <- para[2]
+      gam <- c(0, k, 0)
+      lam <- c(0, -b, b)
+      ckb <- fb.saddle(gam, lam)[3]
+      W * ckb - k * xg1 - b * ( xg2 - xg3 )
     }
 
   ini_kappa <- Rfast::vmf.mle(x)$kappa
   ini <- c(ini_kappa, ini_kappa / 2.1)
-  suppressWarnings({
-  qa <- optim(ini, mle, control = list(maxit = 5000))
-  })
-  para <- qa$par
-  k <- para[1]   ;   b <- para[2]
-  ckb <- Directional::kent.logcon(k, b)
+  qa <- try( optim(ini, mle, xg1 = xg1, xg2 = xg2, xg3 = xg3, W = W, control = list(maxit = 5000)), silent = TRUE )
+  if ( !identical(class(qa), "try-error") ) {
+    para <- qa$par
+    k <- para[1]   ;   b <- para[2]
+    ckb <- kent.logcon(k, b)
+  } else {
+    qa <- optim(ini, mle2, xg1 = xg1, xg2 = xg2, xg3 = xg3, W = W, control = list(maxit = 5000))
+    para <- qa$par
+    k <- para[1]   ;   b <- para[2]
+    gam <- c(0, k, 0)  ;  lam <- c(0, -b, b)
+    ckb <- as.numeric( fb.saddle(gam, lam)[3] )
+  }
+
   lik <-  - W * ckb + k * xg1 + b * (xg2 - xg3)
   param <- c(k, b, psi)
   names(param) <- c("kappa", "beta", "psi")
